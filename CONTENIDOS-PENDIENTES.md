@@ -7,7 +7,7 @@ Primera versión: presentación, catálogo con filtros y búsqueda, fichas con W
 - Nombre público, emprendimiento, rubro, descripción, fotografías y WhatsApp autorizado de cada una de las seis integrantes.
 - Correos de acceso de las integrantes y correo(s) de administración general.
 - Misión, visión e historia aprobadas. El texto actual es una propuesta editorial; no se ha inventado una misión institucional.
-- Referencias de páginas mencionadas en la conversación.
+- Referencia recibida: https://www.relmuwitral.cl/ . Se toma su organización: portada amplia, presentación breve, catálogo visual, pasos de contacto y WhatsApp visible. Los colores, textos y elementos de marca pertenecen a Inmigrar.
 - Confirmar publicación del video y autorizaciones de imagen antes de incorporarlo.
 - Dominio y decisión de apertura pública. La primera publicación de Sites es privada.
 
