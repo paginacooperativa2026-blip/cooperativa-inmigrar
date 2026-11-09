@@ -25,6 +25,17 @@ Las contraseñas se gestionan en Supabase Authentication. El formulario no inclu
 
 Las imágenes admiten PNG, JPG y WebP de hasta **4 MB** para ajustarse a la petición multipart a través de funciones de Netlify. Se guardan en carpetas con el UUID del usuario. Solo las imágenes vinculadas a fichas publicadas son legibles anónimamente; los borradores quedan protegidos. Quitar una imagen o eliminar una ficha la desvincula del catálogo; los archivos huérfanos pueden depurarse posteriormente desde Supabase Storage.
 
+## Publicar en Vercel
+
+1. En Vercel, importa `paginacooperativa2026-blip/cooperativa-inmigrar` desde GitHub. El código del proyecto está en la raíz del repositorio: no agregues una subcarpeta como Root Directory.
+2. `vercel.json` selecciona Next.js, instalación con `npm ci` y build con `npm run build`. La versión de Node se fija en `22.x` mediante `package.json`. Conserva el directorio de salida predeterminado de Next.js.
+3. Para la demostración sin Supabase no hacen falta credenciales: las seis fichas de prueba se muestran por defecto. Puedes declarar `DEMO_CATALOG=true` de forma explícita.
+4. Cuando exista el proyecto de Supabase, configura `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` en las variables de entorno de Vercel para Production y vuelve a desplegar. Ejecuta el SQL y configura las cuentas siguiendo la sección de Supabase.
+5. Actualiza Site URL en Supabase con el dominio de Vercel elegido. Configura `DEMO_CATALOG=false` antes de publicar las fichas reales y vuelve a desplegar.
+6. La Vercel Toolbar se gestiona desde Settings > General > Vercel Toolbar; puede desactivarse para Production.
+
+`.vercelignore` excluye archivos locales y auxiliares del alojamiento anterior al usar la CLI. `.vercel/` queda fuera de Git. La configuración de Netlify se conserva para el despliegue existente y no se utiliza en Vercel.
+
 ## Publicar en Netlify
 
 1. Sube este directorio a un repositorio Git y conéctalo en Netlify. Si el repositorio contiene la carpeta ONG completa, selecciona `cooperativa-inmigrar` como base directory.
