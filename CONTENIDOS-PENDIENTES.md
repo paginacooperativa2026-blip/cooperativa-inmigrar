@@ -1,20 +1,11 @@
-# Cooperativa Inmigrar
+# Cooperativa Inmigrar: pendientes para el lanzamiento
 
-Primera versión: presentación, catálogo con filtros y búsqueda, fichas con WhatsApp, sede y contacto. Panel con persistencia D1 y fotografías R2; borradores, publicación, edición, eliminación y permisos por integrante.
+- Crear proyecto Supabase; configurar URL y clave pública en `.env.local` y Netlify.
+- Ejecutar la migración de Supabase y designar la administradora con el SQL de bootstrap.
+- Crear las cuentas de las seis integrantes y habilitarlas en el panel.
+- Reemplazar las seis fichas de demostración por nombres, rubros, textos, fotografías y contactos reales autorizados. Desactivar `DEMO_CATALOG` antes de lanzar.
+- Aprobar historia, misión y visión. La presentación actual es una propuesta editorial.
+- Confirmar permisos del video y de las personas antes de incorporarlo.
+- Conectar repositorio y dominio a Netlify; probar Supabase Auth y Storage reales.
 
-## Material pendiente
-
-- Nombre público, emprendimiento, rubro, descripción, fotografías y WhatsApp autorizado de cada una de las seis integrantes.
-- Correos de acceso de las integrantes y correo(s) de administración general.
-- Misión, visión e historia aprobadas. El texto actual es una propuesta editorial; no se ha inventado una misión institucional.
-- Referencia recibida: https://www.relmuwitral.cl/ . Se toma su organización: portada amplia, presentación breve, catálogo visual, pasos de contacto y WhatsApp visible. Los colores, textos y elementos de marca pertenecen a Inmigrar.
-- Confirmar publicación del video y autorizaciones de imagen antes de incorporarlo.
-- Dominio y decisión de apertura pública. La primera publicación de Sites es privada.
-
-## Habilitar el panel
-
-Configurar ADMIN_EMAILS en el entorno de Sites con los correos designados explícitamente. El correo de contacto no recibe permisos automáticamente. La administradora ingresa en /admin con ChatGPT, habilita los correos de las integrantes y asigna sus fichas. Cada integrante debe iniciar sesión con el correo habilitado. El identificador estable de su cuenta se vincula en el primer acceso; la administradora puede revocar el acceso. El modo público del sitio no debe conceder permisos de escritura a visitantes.
-
-Los cambios de textos e imágenes afectan a las fichas de emprendimientos. La edición de las secciones institucionales aún se hace en el código.
-
-El correo reservado para redes sociales se excluye del sitio.
+La referencia de estructura es https://www.relmuwitral.cl/ . La identidad y los colores pertenecen a Inmigrar. El correo destinado a redes sociales está excluido del sitio.

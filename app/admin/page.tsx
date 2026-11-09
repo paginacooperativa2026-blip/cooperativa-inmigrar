@@ -1,3 +1,13 @@
-import {access} from '../../lib/access';import {getChatGPTUser,chatGPTSignInPath} from '../chatgpt-auth';import Dashboard from './dashboard';
+import { access, identity } from '../../lib/access';
+import { supabaseConfig } from '../../lib/supabase/config';
+import Dashboard from './dashboard';
+import Login from './login';
+import Logout from './logout';
 export const dynamic='force-dynamic';
-export default async function Admin(){const signed=await getChatGPTUser();const user=signed?await access():null;return <main className="admin-shell"><a href="/" className="back">← Volver al sitio</a><img className="logo" src="/logo-inmigrar.png" alt="Cooperativa Inmigrar"/><p className="eyebrow">ESPACIO DE INTEGRANTES</p><h1>Tu emprendimiento,<br/><em>con tu propia voz.</em></h1>{user?<Dashboard/>:<div className="panel"><h2>{signed?'Tu acceso está pendiente':'Bienvenida a tu espacio'}</h2><p>{signed?'Pide a la administradora que habilite el correo '+signed.email+'.':'Ingresa para administrar los textos e imágenes de tu emprendimiento.'}</p>{!signed&&<a className="button" target="_top" href={chatGPTSignInPath('/admin')}>Ingresar con ChatGPT ↗</a>}<p className="hint">Solo las integrantes autorizadas pueden administrar contenido.</p></div>}</main>}
+export default async function Admin(){
+  const signed=await identity();
+  const user=signed?await access():null;
+  return <main className="admin-shell"><a href="/" className="back">← Volver al sitio</a><img className="logo" src="/logo-inmigrar.png" alt="Cooperativa Inmigrar"/><p className="eyebrow">ESPACIO DE INTEGRANTES</p><h1>Tu emprendimiento,<br/><em>con tu propia voz.</em></h1>
+    {user?<Dashboard/>:signed?<div className="panel"><h2>Tu acceso está pendiente</h2><p>Tu sesión está iniciada con {signed.email}. Pide a la administradora que habilite tu cuenta como integrante.</p><Logout/></div>:<Login configured={Boolean(supabaseConfig())}/>}
+  </main>;
+}

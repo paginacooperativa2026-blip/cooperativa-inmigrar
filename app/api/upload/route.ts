@@ -1,2 +1,20 @@
-import {env} from 'cloudflare:workers';import {access,sameOrigin} from '../../../lib/access';
-export async function POST(req:Request){const user=await access();if(!sameOrigin(req)||!user)return new Response('Sin autorización',{status:403});if(Number(req.headers.get('content-length')||0)>6*1024*1024)return new Response('Máximo 5 MB',{status:413});const form=await req.formData();const file=form.get('image');if(!(file instanceof File)||file.size>5*1024*1024)return new Response('Selecciona una imagen de hasta 5 MB',{status:400});const bytes=new Uint8Array(await file.arrayBuffer());const png=bytes[0]===137&&bytes[1]===80&&bytes[2]===78&&bytes[3]===71;const jpg=bytes[0]===255&&bytes[1]===216&&bytes[2]===255;const webp=String.fromCharCode(...bytes.slice(0,4))==='RIFF'&&String.fromCharCode(...bytes.slice(8,12))==='WEBP';const ext=png?'png':jpg?'jpg':webp?'webp':null;if(!ext)return new Response('Usa PNG, JPG o WebP',{status:400});const key=crypto.randomUUID()+'.'+ext;await env.BUCKET!.put(key,bytes,{customMetadata:{ownerEmail:user.email},httpMetadata:{contentType:ext==='jpg'?'image/jpeg':'image/'+ext}});return Response.json({key})}
+import { access, sameOrigin } from '../../../lib/access';
+import { detectImage } from '../../../lib/validation';
+
+export async function POST(req: Request) {
+  if (!sameOrigin(req)) return new Response('Origen no válido.', { status: 403 });
+  const user = await access();
+  if (!user) return new Response('Acceso no autorizado.', { status: 403 });
+  if (Number(req.headers.get('content-length') || 0) > 5 * 1024 * 1024) return new Response('Selecciona una imagen de hasta 4 MB.', { status: 413 });
+  let form;
+  try { form = await req.formData(); } catch { return new Response('Archivo no válido.', { status: 400 }); }
+  const file = form.get('image');
+  if (!(file instanceof File) || file.size > 4 * 1024 * 1024) return new Response('Selecciona una imagen de hasta 4 MB.', { status: 400 });
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const detected = detectImage(bytes);
+  if (!detected) return new Response('Usa una fotografía PNG, JPG o WebP.', { status: 400 });
+  const key = `${user.userId}/${crypto.randomUUID()}.${detected.ext}`;
+  const { error } = await user.supabase.storage.from('catalog-images').upload(key, bytes, { contentType: detected.type, upsert: false });
+  if (error) return new Response('No se pudo subir la imagen. Verifica el almacenamiento y tus permisos.', { status: 503 });
+  return Response.json({ key }, { headers: { 'Cache-Control': 'private, no-store' } });
+}
