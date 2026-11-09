@@ -1,0 +1,2 @@
+import {getDb} from '../../../db';import {entries} from '../../../db/schema';import {eq} from 'drizzle-orm';
+export async function GET(){const rows=await getDb().select({id:entries.id,name:entries.name,person:entries.person,category:entries.category,description:entries.description,image:entries.image,price:entries.price,whatsapp:entries.whatsapp}).from(entries).where(eq(entries.status,'published'));return Response.json(rows,{headers:{'Cache-Control':'no-store'}});}
